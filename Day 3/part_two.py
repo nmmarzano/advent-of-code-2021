@@ -46,5 +46,4 @@ if __name__ == '__main__':
         report = input_data.read().split('\n')
         
     rates = find_rates(report)
-    print(rates)
     print(rates['oxygen_generator'] * rates['co2_scrubber'])

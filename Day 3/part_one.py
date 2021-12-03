@@ -3,16 +3,13 @@ input_path = 'input.txt'
 
 def find_rates(report):
     ones = [0] * len(report[0])
-    zeroes = [0] * len(report[0])
 
     for line in report:
         for index, bit in enumerate(line):
-            if bit == '0':
-                zeroes[index] += 1
-            else:
+            if bit == '1':
                 ones[index] += 1
 
-    most_common = ['0' if x > y else '1' for (x, y) in zip(zeroes, ones)]
+    most_common = ['1' if x / len(report) >= 0.5 else '0' for x in ones]
     
     gamma = int(''.join(most_common), 2)
     epsilon = gamma ^ int(''.join(['1'] * len(most_common)), 2)

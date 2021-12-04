@@ -29,7 +29,7 @@ def check_win(board):
     if winning_line in board:
         return True
     
-    if winning_line in [list(row) for row in zip(*board)]:
+    if winning_line in [list(row) for row in zip(*board)]: # transposes matrix
         return True
     
     return False
@@ -39,7 +39,7 @@ def mark_number(board, number):
     new_board = board.copy()
     for i in range(len(new_board)):
         for j in range(len(new_board[i])):
-            if not new_board[i][j] == MARKER and new_board[i][j] == number:
+            if new_board[i][j] == number:
                 new_board[i][j] = MARKER
                 return new_board
     return new_board

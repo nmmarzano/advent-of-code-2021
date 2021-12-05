@@ -1,7 +1,6 @@
 input_path = 'input.txt'
 
 
-# no more maths, massive speedup
 def has_intersection(line1, line2):
     [[x11, y11], [x12, y12]] = line1
     [[x21, y21], [x22, y22]] = line2
@@ -23,10 +22,11 @@ def list_intersections(line1, line2):
         xrange = range(max(x11, x21), min(x12, x22) + 1)
         for x in xrange:
             points.add((x, y11))
+            
     return points
 
 
-# pre-tests if there's an intersection mathematically before trying to list all intersections, almost 2x speedup
+# pre-tests if there's an intersection before trying to list all intersections, almost 2x speedup
 def find_all_intersections(lines):
     intersections = set()
 

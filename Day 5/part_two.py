@@ -17,7 +17,7 @@ def has_intersection(line1, line2):
     d = x11_x12 * y21_y22 - y11_y12 * x21_x22
 
     if d == 0:
-        return True
+        return True # this is wrong but it's better to have more false positives
     
     t = (x11_x21 * y21_y22 - y11_y21 * x21_x22) / d
     u = (x11_x21 * y11_y12 - y11_y21 * x11_x12) / d

@@ -1,8 +1,17 @@
 input_path = 'input.txt'
 
 
+def are_both_non_diagonal(line1, line2):
+    [[line1_x1, line1_y1], [line1_x2, line1_y2]] = line1
+    [[line2_x1, line2_y1], [line2_x2, line2_y2]] = line2
+    return line1_x1 == line1_x2 and line1_x1 == line2_x1 and line1_x1 == line2_x2 or line1_y1 == line1_y2 and line1_y1 == line2_y1 and line1_y1 == line2_y2
+
+
 # ended up going with pure math to eliminate errors
 def has_intersection(line1, line2):
+    if are_both_non_diagonal(line1, line2):
+        return has_non_diagonal_intersection(line1, line2)
+    
     [[line1_x1, line1_y1], [line1_x2, line1_y2]] = line1
     [[line2_x1, line2_y1], [line2_x2, line2_y2]] = line2
 
@@ -17,12 +26,19 @@ def has_intersection(line1, line2):
     d = x11_x12 * y21_y22 - y11_y12 * x21_x22
 
     if d == 0:
-        return True # this is wrong but it's better to have more false positives
+        return True # this is wrong but it's better to have more false positives, method explodes on shared slope
     
     t = (x11_x21 * y21_y22 - y11_y21 * x21_x22) / d
     u = (x11_x21 * y11_y12 - y11_y21 * x11_x12) / d
 
     return t >= 0.0 and t <= 1.0 and u >= 0.0 and u <= 1.0
+
+
+def has_non_diagonal_intersection(line1, line2):
+    [[x11, y11], [x12, y12]] = line1
+    [[x21, y21], [x22, y22]] = line2
+
+    return x11 <= x22 and x12 >= x21 and y11 <= y22 and y12 >= y21
 
 
 def enumerate_points(line):
@@ -52,10 +68,29 @@ def enumerate_points(line):
 # here's the inefficient one; creates a set of all points in both lines and then calculates the intersection
 # mathy methods tried exploded when segments coincide on several points
 def list_intersections(line1, line2):
+    if are_both_non_diagonal(line1, line2):
+        return list_non_diagonal_intersections(line1, line2)
     line1_points = enumerate_points(line1)
     line2_points = enumerate_points(line2)
     intersections = line1_points.intersection(line2_points)
     return intersections
+
+
+def list_non_diagonal_intersections(line1, line2):
+    [[x11, y11], [x12, y12]] = line1
+    [[x21, y21], [x22, y22]] = line2
+
+    points = set()
+
+    if x11 == x12:
+        yrange = range(max(y11, y21), min(y12, y22) + 1)
+        for y in yrange:
+            points.add((x11, y))
+    elif y11 == y12:
+        xrange = range(max(x11, x21), min(x12, x22) + 1)
+        for x in xrange:
+            points.add((x, y11))
+    return points
 
 
 # pre-tests if there's an intersection mathematically before trying to list all intersections, almost 2x speedup

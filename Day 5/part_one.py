@@ -9,31 +9,21 @@ def has_intersection(line1, line2):
     return x11 <= x22 and x12 >= x21 and y11 <= y22 and y12 >= y21
 
 
-# clamps the points to enumerate to the general area occupied by both lines at the same time, ~1.25 speedup
-def enumerate_points_in_range(line, line_range):
-    [[x1, y1], [x2, y2]] = line
+def list_intersections(line1, line2):
+    [[x11, y11], [x12, y12]] = line1
+    [[x21, y21], [x22, y22]] = line2
 
     points = set()
 
-    if x1 == x2:
-        yrange = range(max(y1, line_range[0][1]), min(y2, line_range[1][1]) + 1)
+    if x11 == x12:
+        yrange = range(max(y11, y21), min(y12, y22) + 1)
         for y in yrange:
-            points.add((x1, y))
-    elif y1 == y2:
-        xrange = range(max(x1, line_range[0][0]), min(x2, line_range[1][0]) + 1)
+            points.add((x11, y))
+    elif y11 == y12:
+        xrange = range(max(x11, x21), min(x12, x22) + 1)
         for x in xrange:
-            points.add((x, y1))
-    
+            points.add((x, y11))
     return points
-
-
-# here's the inefficient one; creates a set of all points in both lines and then calculates the intersection
-# mathy methods tried exploded when segments coincide on several points
-def list_intersections(line1, line2):
-    line1_points = enumerate_points_in_range(line1, line2)
-    line2_points = enumerate_points_in_range(line2, line1)
-    intersections = line1_points.intersection(line2_points)
-    return intersections
 
 
 # pre-tests if there's an intersection mathematically before trying to list all intersections, almost 2x speedup

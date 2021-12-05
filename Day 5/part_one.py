@@ -28,16 +28,15 @@ def has_intersection(line1, line2):
 # clamps the points to enumerate to the general area occupied by both lines at the same time, ~1.25 speedup
 def enumerate_points_in_range(line, line_range):
     [[x1, y1], [x2, y2]] = line
-    xrange = range(max(x1, line_range[0][0]), min(x2, line_range[1][0]) + 1)
-    yrange = range(max(y1, line_range[0][1]), min(y2, line_range[1][1]) + 1)
 
     points = set()
 
     if x1 == x2:
+        yrange = range(max(y1, line_range[0][1]), min(y2, line_range[1][1]) + 1)
         for y in yrange:
             points.add((x1, y))
-
-    if y1 == y2:
+    elif y1 == y2:
+        xrange = range(max(x1, line_range[0][0]), min(x2, line_range[1][0]) + 1)
         for x in xrange:
             points.add((x, y1))
     

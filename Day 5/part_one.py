@@ -1,28 +1,12 @@
 input_path = 'input.txt'
 
 
-# ended up going with pure math to eliminate errors
+# no more maths, massive speedup
 def has_intersection(line1, line2):
-    [[line1_x1, line1_y1], [line1_x2, line1_y2]] = line1
-    [[line2_x1, line2_y1], [line2_x2, line2_y2]] = line2
+    [[x11, y11], [x12, y12]] = line1
+    [[x21, y21], [x22, y22]] = line2
 
-    x11_x21 = line1_x1 - line2_x1
-    x11_x12 = line1_x1 - line1_x2
-    x21_x22 = line2_x1 - line2_x2
-
-    y11_y21 = line1_y1 - line2_y1
-    y11_y12 = line1_y1 - line1_y2
-    y21_y22 = line2_y1 - line2_y2
-
-    d = x11_x12 * y21_y22 - y11_y12 * x21_x22
-
-    if d == 0:
-        return True
-    
-    t = (x11_x21 * y21_y22 - y11_y21 * x21_x22) / d
-    u = (x11_x21 * y11_y12 - y11_y21 * x11_x12) / d
-
-    return t >= 0.0 and t <= 1.0 and u >= 0.0 and u <= 1.0
+    return x11 <= x22 and x12 >= x21 and y11 <= y22 and y12 >= y21
 
 
 # clamps the points to enumerate to the general area occupied by both lines at the same time, ~1.25 speedup

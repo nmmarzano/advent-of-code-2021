@@ -2,9 +2,9 @@ input_path = 'input.txt'
 
 
 def are_both_non_diagonal(line1, line2):
-    [[line1_x1, line1_y1], [line1_x2, line1_y2]] = line1
-    [[line2_x1, line2_y1], [line2_x2, line2_y2]] = line2
-    return line1_x1 == line1_x2 and line1_x1 == line2_x1 and line1_x1 == line2_x2 or line1_y1 == line1_y2 and line1_y1 == line2_y1 and line1_y1 == line2_y2
+    [[x11, y11], [x12, y12]] = line1
+    [[x21, y21], [x22, y22]] = line2
+    return x11 == x12 and x11 == x21 and x11 == x22 or y11 == y12 and y11 == y21 and y11 == y22
 
 
 # ended up going with pure math to eliminate errors
@@ -12,16 +12,16 @@ def has_intersection(line1, line2):
     if are_both_non_diagonal(line1, line2):
         return has_non_diagonal_intersection(line1, line2)
     
-    [[line1_x1, line1_y1], [line1_x2, line1_y2]] = line1
-    [[line2_x1, line2_y1], [line2_x2, line2_y2]] = line2
+    [[x11, y11], [x12, y12]] = line1
+    [[x21, y21], [x22, y22]] = line2
 
-    x11_x21 = line1_x1 - line2_x1
-    x11_x12 = line1_x1 - line1_x2
-    x21_x22 = line2_x1 - line2_x2
+    x11_x21 = x11 - x21
+    x11_x12 = x11 - x12
+    x21_x22 = x21 - x22
 
-    y11_y21 = line1_y1 - line2_y1
-    y11_y12 = line1_y1 - line1_y2
-    y21_y22 = line2_y1 - line2_y2
+    y11_y21 = y11 - y21
+    y11_y12 = y11 - y12
+    y21_y22 = y21 - y22
 
     d = x11_x12 * y21_y22 - y11_y12 * x21_x22
 
@@ -112,9 +112,9 @@ def reorder_points(lines):
     lines = lines.copy()
     for i in range(len(lines)):
         if lines[i][0][0] == lines[i][1][0] and lines[i][0][1] > lines[i][1][1]:
-            [[lines[i][0][0], lines[i][0][1]], [lines[i][1][0], lines[i][1][1]]] = [[lines[i][1][0], lines[i][1][1]], [lines[i][0][0], lines[i][0][1]]]
+            [lines[i][0], lines[i][1]] = [lines[i][1], lines[i][0]]
         if lines[i][0][0] > lines[i][1][0]:
-            [[lines[i][0][0], lines[i][0][1]], [lines[i][1][0], lines[i][1][1]]] = [[lines[i][1][0], lines[i][1][1]], [lines[i][0][0], lines[i][0][1]]]
+            [lines[i][0], lines[i][1]] = [lines[i][1], lines[i][0]]
     return lines
 
 

@@ -32,8 +32,6 @@ def find_all_intersections(lines):
 
     for i in range(len(lines) - 1):
         for j in range(i + 1, len(lines)):
-            [[line1_x1, line1_y1], [line1_x2, line1_y2]] = lines[i]
-            [[line2_x1, line2_y1], [line2_x2, line2_y2]] = lines[j]
             if has_intersection(lines[i], lines[j]):
                 intersections = intersections.union(list_intersections(lines[i], lines[j]))
     
@@ -42,7 +40,7 @@ def find_all_intersections(lines):
 
 # filter diagonals
 def filter_diagonals(lines):
-    return [x for x in lines if x[0][0] == x[1][0] or x[0][1] == x[1][1]]
+    return [line for line in lines if line[0][0] == line[1][0] or line[0][1] == line[1][1]]
 
 
 # reorders the input data so that the top-left-most point always comes first, for easier processing later
@@ -50,9 +48,9 @@ def reorder_points(lines):
     lines = lines.copy()
     for i in range(len(lines)):
         if lines[i][0][0] == lines[i][1][0] and lines[i][0][1] > lines[i][1][1]:
-            [[lines[i][0][0], lines[i][0][1]], [lines[i][1][0], lines[i][1][1]]] = [[lines[i][1][0], lines[i][1][1]], [lines[i][0][0], lines[i][0][1]]]
+            [lines[i][0], lines[i][1]] = [lines[i][1], lines[i][0]]
         if lines[i][0][1] == lines[i][1][1] and lines[i][0][0] > lines[i][1][0]:
-            [[lines[i][0][0], lines[i][0][1]], [lines[i][1][0], lines[i][1][1]]] = [[lines[i][1][0], lines[i][1][1]], [lines[i][0][0], lines[i][0][1]]]
+            [lines[i][0], lines[i][1]] = [lines[i][1], lines[i][0]]
     return lines
 
 

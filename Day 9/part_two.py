@@ -9,7 +9,6 @@ def get_surrounding_points(cave, point):
         'up': (9 if y <= 0 else int(cave[y - 1][x]), (x, y - 1)),
         'down': (9 if y >= (len(cave) - 1) else int(cave[y + 1][x]), (x, y + 1))
     }
-    
 
 
 def basin_size(cave, point):

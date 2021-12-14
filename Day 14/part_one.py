@@ -1,28 +1,21 @@
 input_path = 'input.txt'
 
 
-def get_max(stats):
+def get_extremes(stats):
     maximum = 0
+    minimum = stats[list(stats.keys())[0]]
     max_stat = ''
-    
+    min_stat = ''
+
     for char in stats:
         if stats[char] > maximum:
             maximum = stats[char]
             max_stat = char
-
-    return max_stat
-
-
-def get_min(stats):
-    minimum = stats[list(stats.keys())[0]]
-    min_stat = ''
-    
-    for char in stats:
-        if stats[char] < minimum:
+        elif stats[char] < minimum:
             minimum = stats[char]
             min_stat = char
 
-    return min_stat
+    return {'max': max_stat, 'min': min_stat}
 
 
 def get_stats(template):
@@ -64,7 +57,6 @@ if __name__ == '__main__':
         template = polymerize(template, pairs)
 
     stats = get_stats(template)
-    max_stat = get_max(stats)
-    min_stat = get_min(stats)
+    extremes = get_extremes(stats)
 
-    print(stats[max_stat] - stats[min_stat])
+    print(stats[extremes['max']] - stats[extremes['min']])

@@ -1,3 +1,6 @@
+## Off by 1 on part 1, off by 3 on part 2, what is going on
+## This solution assumes no path ever moves upwards or leftwards, which seems to be true
+
 input_path = 'input.txt'
 
 
@@ -35,12 +38,27 @@ def find_lowest_risk(grid):
                 risk[y][x] = 0
 
     return risk
-    
 
+
+def embiggen_grid(grid):
+    big_grid = []
+    
+    for times_i in range(5):
+        for i in range(len(grid)):
+            new_line = []
+            for times_j in range(5):
+                for j in range(len(grid[i])):
+                    new_line.append(((grid[i][j] + times_i + times_j - 1) % 9) + 1)
+            big_grid.append(new_line)
+
+    return big_grid
+    
 
 if __name__ == '__main__':
     with open(input_path) as input_data:
         grid = [[int(num) for num in line] for line in input_data.read().split('\n')]
+
+    grid = embiggen_grid(grid)
 
     risk_grid = find_lowest_risk(grid)
 

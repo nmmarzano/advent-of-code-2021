@@ -5,14 +5,16 @@ input_path = 'input.txt'
 dxdy = [[1, 0], [-1, 0], [0, 1], [0, -1]]
 
 
-def print_grid(grid):
-    for line in grid:
-        screen_line = ''
-        for num in line:
-            if num < 10:
-                screen_line += '0'
-            screen_line += f'{num} '
-        print(screen_line)
+def find_min(points, risk):
+    min_point = points[0]
+    min_risk = risk[points[0][1]][points[0][0]]
+
+    for point in points:
+        if risk[point[1]][point[0]] < min_risk:
+            min_point = point
+            min_risk = risk[point[1]][point[0]]
+
+    return min_point
 
 
 def find_lowest_risk(grid):
@@ -22,7 +24,7 @@ def find_lowest_risk(grid):
     to_add = []
 
     while len(to_check) > 0:
-        min_distance = reduce(lambda a, b: a if risk[a[1]][a[0]] < risk[b[1]][b[0]] else b, to_check)
+        min_distance = find_min(to_check, risk)
         to_check.remove(min_distance)
         x, y = min_distance
         grid[y][x] = 'x'
@@ -36,14 +38,11 @@ def find_lowest_risk(grid):
                     to_check.append([x + dx, y + dy])
             
     return risk
-    
 
 
-if __name__ == '__main__':
-    with open(input_path) as input_data:
-        grid = [[int(num) for num in line] for line in input_data.read().split('\n')]
-
+def embiggen_grid(grid):
     big_grid = []
+    
     for times_i in range(5):
         for i in range(len(grid)):
             new_line = []
@@ -52,11 +51,15 @@ if __name__ == '__main__':
                     new_line.append(((grid[i][j] + times_i + times_j - 1) % 9) + 1)
             big_grid.append(new_line)
 
-    # print_grid(big_grid)
-    # print('-----')
+    return big_grid
 
-    risk_grid = find_lowest_risk(big_grid)
 
-    # print_grid(risk_grid)
+if __name__ == '__main__':
+    with open(input_path) as input_data:
+        grid = [[int(num) for num in line] for line in input_data.read().split('\n')]
 
-    print(risk_grid[len(big_grid) - 1][len(big_grid[0]) - 1])
+    grid = embiggen_grid(grid)
+
+    risk_grid = find_lowest_risk(grid)
+
+    print(risk_grid[len(grid) - 1][len(grid[0]) - 1])
